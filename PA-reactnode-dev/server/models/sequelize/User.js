@@ -11,7 +11,7 @@ User.init(
       unique: true,
       validate: {
         isEmail: {
-          msg: "Email non valide"
+          msg: "Invalid Email"
         }
       }
     },
@@ -26,6 +26,11 @@ User.init(
       allowNull: false,
       defaultValue: true,
     },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'USER'
+    }
   },
   {
     sequelize,
@@ -38,11 +43,6 @@ User.init(
 User.addHook('beforeCreate', async (user, options) => {
   const salt = await bcrypt.genSalt();
   user.password = await bcrypt.hash(user.password, salt);
-});
-
-// Schema update
-User.sync({
-  force: true,
 });
 
 module.exports = User;

@@ -1,16 +1,24 @@
 const TransactionRouter = require("./transactions");
-const ShopRouter = require("./shop");
-// import UserRouter from "./users";
-const PaymentRouter = require("./payment");
+const MerchantRouter = require('./merchant');
+const SecurityRouter = require("./security");
 const PspRouter = require("./psp");
+const ShopRouter = require("./shop");
+const PaymentRouter = require("./payment");
+const OperationRouter = require("./operations");
+const AdminRouter = require("./admin");
+const verifyToken = require("../middlewares/verifyToken");
 
 const RouterManager = (app) => {
   app
-    .use('/transactions', TransactionRouter)
-    // .use("/users", UserRouter)
-    .use('/shop', ShopRouter)
+    .use("/shop", ShopRouter)
     .use('/payment', PaymentRouter)
-    .use('/psp', PspRouter)
+    .use("/psp", PspRouter)
+    .use("/", SecurityRouter)
+    .use(verifyToken)
+    .use("/admin", AdminRouter)
+    .use('/merchant', MerchantRouter)
+    .use('/transactions', TransactionRouter)
+    .use('/operations', OperationRouter)
 }
 
 module.exports = RouterManager;
